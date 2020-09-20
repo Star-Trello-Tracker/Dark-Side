@@ -2,19 +2,14 @@ package com.star_trello.darkside.telegram_bot.notifications;
 
 import com.star_trello.darkside.model.Notification;
 import com.star_trello.darkside.model.NotificationType;
-import com.star_trello.darkside.telegram_bot.utils.TextUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StatusChangeNotificationTextConstructor implements NotificationTextConstructor {
+public class StatusChangeNotificationTextConstructor extends ChangeNotificationTextConstructor {
     @Override
-    public String getNotificationText(Notification notification, String commentText) {
-        return "Пользователь " + TextUtils.fullUsername(notification.getInitiator()) +
-                " изменил статус задачи " +
-                TextUtils.fullTaskTitle(notification.getTask())
-                + " на " + notification.getTask().getStatus();
+    protected String getChangedValue(Notification notification) {
+        return notification.getTask().getStatus().toString();
     }
-
     @Override
     public NotificationType getNotificationType() {
         return NotificationType.TASK_STATUS_UPDATED;
